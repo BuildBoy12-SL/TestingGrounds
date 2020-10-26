@@ -1,8 +1,8 @@
-using System;
-
 namespace TestingGrounds.Commands
 {
     using CommandSystem;
+    using Exiled.Permissions.Extensions;
+    using System;
     
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class Speed : ICommand
@@ -11,6 +11,12 @@ namespace TestingGrounds.Commands
         {
             try
             {
+                if (!(sender as CommandSender).CheckPermission("tg.speed"))
+                {
+                    response = "Permission denied. Required: tg.speed";
+                    return false;
+                }
+
                 if (float.TryParse(arguments.At(0), out var multiplier))
                 {
                     ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier = multiplier;
