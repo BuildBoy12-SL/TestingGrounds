@@ -1,27 +1,41 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>net472</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="EXILED" Version="2.1.9" />
+      <PackageReference Include="EXILED" Version="2.1.11" />
+      <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net472" Version="1.0.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
       <Reference Include="0Harmony, Version=2.0.1.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\ZombieWaveSurvival\ZombieWaveSurvival\bin\Release\net472\0Harmony.dll</HintPath>
       </Reference>
       <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\ZombieWaveSurvival\ZombieWaveSurvival\bin\Release\net472\Assembly-CSharp_publicized.dll</HintPath>
       </Reference>
       <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\ZombieWaveSurvival\ZombieWaveSurvival\bin\Release\net472\Assembly-CSharp-firstpass.dll</HintPath>
       </Reference>
       <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\ZombieWaveSurvival\ZombieWaveSurvival\bin\Release\net472\CommandSystem.Core.dll</HintPath>
       </Reference>
       <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\ZombieWaveSurvival\ZombieWaveSurvival\bin\Release\net472\Mirror.dll</HintPath>
+      </Reference>
+      <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+        <HintPath>..\..\..\..\..\..\..\..\home\build\.config\EXILED\Plugins\dependencies\Newtonsoft.Json.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\ZombieWaveSurvival\ZombieWaveSurvival\bin\Release\net472\UnityEngine.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\ZombieWaveSurvival\ZombieWaveSurvival\bin\Release\net472\UnityEngine.CoreModule.dll</HintPath>
       </Reference>
     </ItemGroup>
 

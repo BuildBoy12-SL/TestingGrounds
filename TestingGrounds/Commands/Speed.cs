@@ -3,35 +3,34 @@ namespace TestingGrounds.Commands
     using CommandSystem;
     using Exiled.Permissions.Extensions;
     using System;
-    
+
+    [CommandHandler(typeof(GameConsoleCommandHandler))]
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class Speed : ICommand
     {
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            try
+            if (!(sender as CommandSender).CheckPermission("tg.speed"))
             {
-                if (!(sender as CommandSender).CheckPermission("tg.speed"))
-                {
-                    response = "Permission denied. Required: tg.speed";
-                    return false;
-                }
-
-                if (float.TryParse(arguments.At(0), out var multiplier))
-                {
-                    ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier = multiplier;
-                    response = "Multiplier changed successfully.";
-                    return true;
-                }
-
-                response = "Enter a valid num as an argument.";
+                response = "Permission denied. Required: tg.speed";
                 return false;
             }
-            catch (IndexOutOfRangeException)
+
+            if (arguments.Count != 1)
             {
-                response = "Enter an argument for the speed modifier.";
+                response = "Please enter a multiplier for speed.";
                 return false;
             }
+            
+            if (float.TryParse(arguments.At(0), out var multiplier))
+            {
+                ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier = multiplier;
+                response = "Multiplier changed successfully.";
+                return true;
+            }
+
+            response = "Please enter a multiplier for speed.";
+            return false;
         }
 
         public string Command => "speed";
