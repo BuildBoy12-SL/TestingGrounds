@@ -6,6 +6,8 @@ namespace TestingGrounds.Handlers
     using MEC;
     using UnityEngine;
     
+    using static TestingGrounds;
+    
     public class PlayerHandlers
     { 
         public void OnShoot(ShootingEventArgs ev)
@@ -14,11 +16,11 @@ namespace TestingGrounds.Handlers
                 return;
 
             int itemIndex = ev.Shooter.Inventory.GetItemIndex();
-            if (ev.Shooter.Inventory.items[itemIndex].durability - 1f < 1)
+            if (ev.Shooter.Inventory.items[itemIndex].durability - Instance.Config.ItemGunConsumedAmmo < 0)
                 return;
             
             ev.IsAllowed = false;
-            ev.Shooter.Inventory.items.ModifyDuration(itemIndex, ev.Shooter.Inventory.items[itemIndex].durability - 1f);
+            ev.Shooter.Inventory.items.ModifyDuration(itemIndex, ev.Shooter.Inventory.items[itemIndex].durability - Instance.Config.ItemGunConsumedAmmo);
             if (State.AlteredGuns[ev.Shooter].IsThrowable())
             {
                 switch (State.AlteredGuns[ev.Shooter])
