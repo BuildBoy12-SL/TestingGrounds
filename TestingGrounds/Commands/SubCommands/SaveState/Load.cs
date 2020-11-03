@@ -1,4 +1,4 @@
-namespace TestingGrounds.Commands.SaveState
+namespace TestingGrounds.Commands.SubCommands.SaveState
 {
     using Classes.SaveState;
     using CommandSystem;
@@ -10,7 +10,6 @@ namespace TestingGrounds.Commands.SaveState
     
     using static TestingGrounds;
     
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class Load : ICommand
     {
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -29,34 +28,25 @@ namespace TestingGrounds.Commands.SaveState
 
             DirectoryInfo directoryInfo = new DirectoryInfo(SaveStateDirectory);
             foreach (var file in directoryInfo.GetFiles())
-            {    
-                try
-                {
-                    if (file.Name != arguments.At(0))
-                        continue;
+            {
+                if (file.Name != arguments.At(0))
+                    continue;
 
-                    var saveFile = file.FullName;
-                    var lines = File.ReadAllText(saveFile);
-                    State.SaveState = JsonConvert.DeserializeObject<SaveState>(lines);
-                    if (arguments.Count == 2)
+                var saveFile = file.FullName;
+                var lines = File.ReadAllText(saveFile);
+                State.SaveState = JsonConvert.DeserializeObject<SaveState>(lines);
+                if (arguments.Count == 2)
+                {
+                    if (arguments.At(1) == "f" || arguments.At(1) == "force")
                     {
-                        if (arguments.At(1) == "f" || arguments.At(1) == "force")
-                        {
-                            Round.Restart();
-                            response = "Loading save in new round.";
-                            return true;
-                        }
+                        Round.Restart();
+                        response = "Loading save in new round.";
+                        return true;
                     }
+                }
 
-                    Methods.LoadState();
-                }
-                catch(Exception e)
-                {
-                    Log.Error("TestingGrounds command error while executing SaveState/Load: " + e);
-                    response = "An internal error has occured.";
-                    return false;
-                }
-                            
+                Methods.LoadState();
+                    
                 response = "Save loaded successfully.";
                 return true;
             }

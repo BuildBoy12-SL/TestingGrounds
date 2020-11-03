@@ -15,6 +15,7 @@
 
         private static readonly Harmony Harmony = new Harmony(nameof(TestingGrounds).ToLowerInvariant());
         
+        private static readonly PlayerHandlers PlayerHandlers = new PlayerHandlers();
         private static readonly ServerHandlers ServerHandlers = new ServerHandlers();
 
         public override void OnEnabled()
@@ -24,6 +25,7 @@
             if (!Directory.Exists(SaveStateDirectory))
                 Directory.CreateDirectory(SaveStateDirectory);
             
+            PlayerEvents.Shooting += PlayerHandlers.OnShoot;
             ServerEvents.RoundStarted += ServerHandlers.OnRoundStart;
             Harmony.PatchAll();
             
@@ -32,6 +34,7 @@
 
         public override void OnDisabled()
         {
+            PlayerEvents.Shooting -= PlayerHandlers.OnShoot;
             ServerEvents.RoundStarted -= ServerHandlers.OnRoundStart;
             Harmony.UnpatchAll(nameof(TestingGrounds).ToLowerInvariant());
         }

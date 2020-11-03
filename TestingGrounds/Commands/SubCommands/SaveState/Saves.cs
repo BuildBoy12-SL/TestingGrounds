@@ -1,4 +1,4 @@
-namespace TestingGrounds.Commands.SaveState
+namespace TestingGrounds.Commands.SubCommands.SaveState
 {
     using CommandSystem;
     using Exiled.Permissions.Extensions;
@@ -8,7 +8,6 @@ namespace TestingGrounds.Commands.SaveState
     
     using static TestingGrounds;
     
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class Saves : ICommand
     {
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)

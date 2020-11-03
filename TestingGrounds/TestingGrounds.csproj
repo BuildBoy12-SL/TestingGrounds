@@ -4,6 +4,10 @@
         <TargetFramework>net472</TargetFramework>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
     <ItemGroup>
       <PackageReference Include="EXILED" Version="2.1.11" />
       <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net472" Version="1.0.0">
@@ -36,6 +40,9 @@
       </Reference>
       <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
         <HintPath>..\..\ZombieWaveSurvival\ZombieWaveSurvival\bin\Release\net472\UnityEngine.CoreModule.dll</HintPath>
+      </Reference>
+      <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\..\Physics Fuckery\Physics Fuckery\bin\Debug\UnityEngine.PhysicsModule.dll</HintPath>
       </Reference>
     </ItemGroup>
 

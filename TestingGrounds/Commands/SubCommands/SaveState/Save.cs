@@ -1,4 +1,4 @@
-namespace TestingGrounds.Commands.SaveState
+namespace TestingGrounds.Commands.SubCommands.SaveState
 {
     using Classes.SaveState;
     using CommandSystem;
@@ -12,7 +12,6 @@ namespace TestingGrounds.Commands.SaveState
     
     using static TestingGrounds;
     
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class Save : ICommand
     {
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -66,8 +65,7 @@ namespace TestingGrounds.Commands.SaveState
                     Position = player.Position,
                     Role = player.Role,
                     Rotation = player.Rotation
-                })
-                .ToList();
+                }).ToList();
 
             var savedItems = 
                 (from pickup in UnityEngine.Object.FindObjectsOfType<Pickup>() let transform = pickup.transform select 

@@ -1,11 +1,9 @@
-namespace TestingGrounds.Commands
+namespace TestingGrounds.Commands.SubCommands
 {
     using CommandSystem;
     using Exiled.Permissions.Extensions;
     using System;
-
-    [CommandHandler(typeof(GameConsoleCommandHandler))]
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
+    
     public class Speed : ICommand
     {
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -22,15 +20,15 @@ namespace TestingGrounds.Commands
                 return false;
             }
             
-            if (float.TryParse(arguments.At(0), out var multiplier))
+            if (!float.TryParse(arguments.At(0), out var multiplier))
             {
-                ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier = multiplier;
-                response = "Multiplier changed successfully.";
-                return true;
+                response = "Please enter a multiplier for speed.";
+                return false;
             }
-
-            response = "Please enter a multiplier for speed.";
-            return false;
+            
+            ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier = multiplier;
+            response = "Multiplier changed successfully.";
+            return true;
         }
 
         public string Command => "speed";
