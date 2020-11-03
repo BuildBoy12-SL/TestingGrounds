@@ -39,6 +39,26 @@ namespace TestingGrounds.Commands.SubCommands
                     return false;
                 }
             }
+            else if (arguments.At(1) == "all")
+            {
+                if (arguments.At(0) == "remove")
+                {
+                    State.AlteredGuns.Clear();
+                    response = "Removed all players from ItemGun";
+                    return true;
+                }
+                
+                foreach (Player player in Player.List)
+                {
+                    if (State.AlteredGuns.ContainsKey(player))
+                        State.AlteredGuns[player] = item;
+                    else
+                        State.AlteredGuns.Add(player, item);
+                }
+                
+                response = $"Guns for all players have been set to shoot {item}";
+                return true;
+            }
             else
                 ply = Player.Get(arguments.At(1));
 
