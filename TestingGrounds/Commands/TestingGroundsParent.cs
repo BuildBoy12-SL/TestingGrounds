@@ -2,6 +2,7 @@ namespace TestingGrounds.Commands
 {
     using CommandSystem;
     using SubCommands;
+    using SubCommands.Ruler;
     using SubCommands.SaveState;
     using System;
 
@@ -21,6 +22,8 @@ namespace TestingGrounds.Commands
             RegisterCommand(new Save());
             RegisterCommand(new Saves());
             RegisterCommand(new Speed());
+            RegisterCommand(new Ruler());
+            RegisterCommand(new EndRuler());
         }
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)

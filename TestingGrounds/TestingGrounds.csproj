@@ -21,7 +21,7 @@
         <HintPath>..\..\ZombieWaveSurvival\ZombieWaveSurvival\bin\Release\net472\0Harmony.dll</HintPath>
       </Reference>
       <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\..\ZombieWaveSurvival\ZombieWaveSurvival\bin\Release\net472\Assembly-CSharp_publicized.dll</HintPath>
+        <HintPath>..\..\..\..\..\..\..\..\home\build\Downloads\Assembly-CSharp_publicized.dll</HintPath>
       </Reference>
       <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
         <HintPath>..\..\ZombieWaveSurvival\ZombieWaveSurvival\bin\Release\net472\Assembly-CSharp-firstpass.dll</HintPath>
