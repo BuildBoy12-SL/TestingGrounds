@@ -1,7 +1,7 @@
 namespace TestingGrounds.Classes.SaveState
 {
     using UnityEngine;
-    
+
     public class SavedPlayer
     {
         public Inventory.SyncListItemInfo Inventory { get; set; }

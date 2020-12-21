@@ -1,7 +1,7 @@
 namespace TestingGrounds.Classes.SaveState
 {
     using System.Collections.Generic;
-    
+
     public class SaveState
     {
         public int Seed { get; set; }

@@ -1,7 +1,7 @@
 namespace TestingGrounds.Classes.SaveState
 {
     using UnityEngine;
-    
+
     public class SavedDoor
     {
         public bool IsDestroyed { get; set; }

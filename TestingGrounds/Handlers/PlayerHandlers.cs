@@ -6,44 +6,44 @@ namespace TestingGrounds.Handlers
     using MEC;
     using UnityEngine;
     
-    using static TestingGrounds;
-    
     public class PlayerHandlers
-    { 
+    {
+        public PlayerHandlers(TestingGrounds testingGrounds) => _testingGrounds = testingGrounds;
+        private readonly TestingGrounds _testingGrounds;
+        
         public void OnShoot(ShootingEventArgs ev)
         {
             if (!State.AlteredGuns.ContainsKey(ev.Shooter))
                 return;
 
             int itemIndex = ev.Shooter.Inventory.GetItemIndex();
-            if (ev.Shooter.Inventory.items[itemIndex].durability - Instance.Config.ItemGunConsumedAmmo < 0)
+            if (ev.Shooter.Inventory.items[itemIndex].durability - _testingGrounds.Config.ItemGunConsumedAmmo < 0)
                 return;
             
             ev.IsAllowed = false;
-            ev.Shooter.Inventory.items.ModifyDuration(itemIndex, ev.Shooter.Inventory.items[itemIndex].durability - Instance.Config.ItemGunConsumedAmmo);
-            if (State.AlteredGuns[ev.Shooter].IsThrowable())
+            ev.Shooter.Inventory.items.ModifyDuration(itemIndex, ev.Shooter.Inventory.items[itemIndex].durability - _testingGrounds.Config.ItemGunConsumedAmmo);
+            ItemType item = State.AlteredGuns[ev.Shooter];
+            if (item.IsThrowable())
             {
-                switch (State.AlteredGuns[ev.Shooter])
+                switch (item)
                 {
                     case ItemType.SCP018:
                         Methods.SpawnGrenadeOnPlayer(ev.Shooter, GrenadeType.Scp018);
-                        break;
+                        return;
                     
                     case ItemType.GrenadeFrag:
                         Methods.SpawnGrenadeOnPlayer(ev.Shooter, GrenadeType.FragGrenade);
-                        break;
+                        return;
                     
                     case ItemType.GrenadeFlash:
                         Methods.SpawnGrenadeOnPlayer(ev.Shooter, GrenadeType.Flashbang);
-                        break;
+                        return;
                 }
-                
-                return;
             }
                 
-            var pickup = State.AlteredGuns[ev.Shooter].Spawn(State.AlteredGuns[ev.Shooter].ItemDur(), ev.Shooter.Position);
-            Timing.RunCoroutine(Methods.ThrowWhenRigidBody(pickup,
-                (ev.Shooter.ReferenceHub.PlayerCameraReference.forward + new Vector3(0, 0.25f, 0)).normalized));
+            Pickup pickup = State.AlteredGuns[ev.Shooter].Spawn(item.ItemDur(), ev.Shooter.Position);
+            Methods.CoroutineHandles.Add(Timing.RunCoroutine(Methods.ThrowWhenRigidBody(pickup,
+                (ev.Shooter.ReferenceHub.PlayerCameraReference.forward + new Vector3(0, 0.25f, 0)).normalized)));
         }
     }
 }

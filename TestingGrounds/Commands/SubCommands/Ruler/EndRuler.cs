@@ -1,11 +1,11 @@
-using System;
-using CommandSystem;
-using Exiled.API.Features;
-using MEC;
-using RemoteAdmin;
-
 namespace TestingGrounds.Commands.SubCommands.Ruler
 {
+    using CommandSystem;
+    using Exiled.API.Features;
+    using MEC;
+    using RemoteAdmin;
+    using System;
+
     public class EndRuler : ICommand
     {
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -15,7 +15,7 @@ namespace TestingGrounds.Commands.SubCommands.Ruler
                 response = "This command can only be executed from the game level.";
                 return false;
             }
-            
+
             var ply = Player.Get(player.SenderId);
             if (!State.Ruler.ContainsKey(ply))
             {

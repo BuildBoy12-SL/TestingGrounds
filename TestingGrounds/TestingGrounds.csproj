@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net472</TargetFramework>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -21,7 +22,7 @@
         <HintPath>..\..\ZombieWaveSurvival\ZombieWaveSurvival\bin\Release\net472\0Harmony.dll</HintPath>
       </Reference>
       <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\..\..\..\..\..\..\..\home\build\Downloads\Assembly-CSharp_publicized.dll</HintPath>
+        <HintPath>..\..\Pro079\ModuleDLLs\net472\Assembly-CSharp_publicized.dll</HintPath>
       </Reference>
       <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
         <HintPath>..\..\ZombieWaveSurvival\ZombieWaveSurvival\bin\Release\net472\Assembly-CSharp-firstpass.dll</HintPath>
@@ -35,6 +36,9 @@
       <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
         <HintPath>..\..\..\..\..\..\..\..\home\build\.config\EXILED\Plugins\dependencies\Newtonsoft.Json.dll</HintPath>
       </Reference>
+      <Reference Include="NorthwoodLib, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\Pro079\ModuleDLLs\net472\NorthwoodLib.dll</HintPath>
+      </Reference>
       <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
         <HintPath>..\..\ZombieWaveSurvival\ZombieWaveSurvival\bin\Release\net472\UnityEngine.dll</HintPath>
       </Reference>
@@ -42,7 +46,7 @@
         <HintPath>..\..\ZombieWaveSurvival\ZombieWaveSurvival\bin\Release\net472\UnityEngine.CoreModule.dll</HintPath>
       </Reference>
       <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-        <HintPath>..\..\..\Physics Fuckery\Physics Fuckery\bin\Debug\UnityEngine.PhysicsModule.dll</HintPath>
+        <HintPath>..\..\SubclassItems\SubclassItems\bin\Release\net472\UnityEngine.PhysicsModule.dll</HintPath>
       </Reference>
     </ItemGroup>
 

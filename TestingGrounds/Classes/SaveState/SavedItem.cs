@@ -1,7 +1,7 @@
 namespace TestingGrounds.Classes.SaveState
 {
     using UnityEngine;
-    
+
     public class SavedItem
     {
         public float Durability { get; set; }

@@ -15,7 +15,7 @@ namespace TestingGrounds.Patches
             if (!__instance.isLocalPlayer || !NetworkServer.active)
                 return false;
             
-            foreach (var workstation in Object.FindObjectsOfType<WorkStation>())
+            foreach (WorkStation workstation in Object.FindObjectsOfType<WorkStation>())
             {
                 var transform = workstation.transform;
                 workstation.Networkposition = new Offset

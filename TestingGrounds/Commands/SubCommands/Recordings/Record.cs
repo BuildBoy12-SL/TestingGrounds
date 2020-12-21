@@ -1,12 +1,12 @@
-namespace TestingGrounds.Commands.SubCommands.SaveState
+namespace TestingGrounds.Commands.SubCommands.Recordings
 {
     using CommandSystem;
     using Exiled.Permissions.Extensions;
+    using MEC;
     using System;
     using System.IO;
-    using System.Linq;
 
-    public class Save : ICommand
+    public class Record : ICommand
     {
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -16,31 +16,30 @@ namespace TestingGrounds.Commands.SubCommands.SaveState
                 return false;
             }
 
-            if (arguments.Count > 2)
+            if (arguments.Count < 2)
             {
                 response =
-                    "Usage: save (name) (delete / (force -> If a file with the same name should be overwritten))";
+                    "Usage: record <name> <seconds> (delete / (force -> If a directory with the same name should be overwritten))";
                 return false;
             }
 
-            string fileName = arguments.Count > 0 ? arguments.At(0) : "Save";
-            string fullDirectory = Path.Combine(TestingGrounds.SaveStateDirectory, fileName);
-
-            if (Directory.GetFiles(TestingGrounds.SaveStateDirectory).Any(file => file == fileName))
+            string directory = arguments.At(0);
+            string fullDirectory = Path.Combine(TestingGrounds.SaveStateDirectory, directory);
+            if (Directory.Exists(fullDirectory))
             {
-                if (arguments.Count != 2)
+                if (arguments.Count != 3)
                 {
                     response = "A save already exists with that name!" +
                                "\nSpecify the \"force\" parameter to overwrite or \"delete\" parameter to remove.";
                     return false;
                 }
 
-                switch (arguments.At(1))
+                switch (arguments.At(2))
                 {
                     case "d":
                     case "delete":
-                        File.Delete(fullDirectory);
-                        response = $"Save \"{fileName}\" deleted.";
+                        Directory.Delete(fullDirectory);
+                        response = $"Recording under \"{directory}\" have been deleted.";
                         return false;
                     case "f":
                     case "force":
@@ -53,13 +52,19 @@ namespace TestingGrounds.Commands.SubCommands.SaveState
                 }
             }
 
-            Methods.SaveState(fullDirectory);
-            response = $"Game saved with the name \"{fileName}\"";
+            if (!int.TryParse(arguments.At(1), out int seconds))
+            {
+                response = "Please enter in a valid number as an argument.";
+                return false;
+            }
+
+            Methods.CoroutineHandles.Add(Timing.RunCoroutine(Methods.Record(directory, seconds)));
+            response = $"The next {seconds} seconds will now be recorded.";
             return true;
         }
 
-        public string Command => "save";
-        public string[] Aliases => new string[0];
-        public string Description => "Saves the state of the current round.";
+        public string Command => "record";
+        public string[] Aliases => Array.Empty<string>();
+        public string Description => "Records a given amount of seconds.";
     }
 }

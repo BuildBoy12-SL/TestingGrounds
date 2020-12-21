@@ -34,7 +34,7 @@ namespace TestingGrounds.Commands.SubCommands.Ruler
             if (!State.Ruler.ContainsKey(ply))
             {
                 State.Ruler.Add(ply, hit.point);
-                Timing.RunCoroutine(Methods.DoDistance(ply), $"{ply.UserId}");
+                Methods.CoroutineHandles.Add(Timing.RunCoroutine(Methods.DoDistance(ply), $"{ply.UserId}"));
             }
             else
                 State.Ruler[ply] = hit.point;

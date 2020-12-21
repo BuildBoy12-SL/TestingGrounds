@@ -2,6 +2,7 @@ namespace TestingGrounds.Commands
 {
     using CommandSystem;
     using SubCommands;
+    using SubCommands.Recordings;
     using SubCommands.Ruler;
     using SubCommands.SaveState;
     using System;
@@ -18,10 +19,16 @@ namespace TestingGrounds.Commands
         public sealed override void LoadGeneratedCommands()
         {
             RegisterCommand(new ItemGun());
+            
             RegisterCommand(new Load());
             RegisterCommand(new Save());
             RegisterCommand(new Saves());
+            
             RegisterCommand(new Speed());
+            
+            RegisterCommand(new Record());
+            RegisterCommand(new Play());
+            
             RegisterCommand(new Ruler());
             RegisterCommand(new EndRuler());
         }

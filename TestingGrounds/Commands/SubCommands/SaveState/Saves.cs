@@ -2,31 +2,30 @@ namespace TestingGrounds.Commands.SubCommands.SaveState
 {
     using CommandSystem;
     using Exiled.Permissions.Extensions;
+    using NorthwoodLib.Pools;
     using System;
     using System.IO;
     using System.Text;
-    
-    using static TestingGrounds;
-    
+
     public class Saves : ICommand
     {
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!(sender as CommandSender).CheckPermission("tg.save"))
+            if (!sender.CheckPermission("tg.save"))
             {
                 response = "Permission denied. Required: tg.save";
                 return false;
             }
 
-            StringBuilder stringBuilder = new StringBuilder("\n");
-
-            DirectoryInfo directoryInfo = new DirectoryInfo(SaveStateDirectory);
+            StringBuilder stringBuilder = StringBuilderPool.Shared.Rent("\n");
+            DirectoryInfo directoryInfo = new DirectoryInfo(TestingGrounds.SaveStateDirectory);
             foreach (var file in directoryInfo.GetFiles())
             {
                 stringBuilder.AppendLine(file.Name);
             }
 
             response = stringBuilder.ToString();
+            StringBuilderPool.Shared.Return(stringBuilder);
             return true;
         }
 

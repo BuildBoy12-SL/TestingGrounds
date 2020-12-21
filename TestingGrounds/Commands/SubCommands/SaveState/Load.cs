@@ -8,13 +8,11 @@ namespace TestingGrounds.Commands.SubCommands.SaveState
     using System;
     using System.IO;
     
-    using static TestingGrounds;
-    
     public class Load : ICommand
     {
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!(sender as CommandSender).CheckPermission("tg.load"))
+            if (!sender.CheckPermission("tg.load"))
             {
                 response = "Permission denied. Required: tg.load";
                 return false;
@@ -26,27 +24,27 @@ namespace TestingGrounds.Commands.SubCommands.SaveState
                 return false;
             }
 
-            DirectoryInfo directoryInfo = new DirectoryInfo(SaveStateDirectory);
+            DirectoryInfo directoryInfo = new DirectoryInfo(TestingGrounds.SaveStateDirectory);
             foreach (var file in directoryInfo.GetFiles())
             {
                 if (file.Name != arguments.At(0))
                     continue;
 
-                var saveFile = file.FullName;
-                var lines = File.ReadAllText(saveFile);
-                State.SaveState = JsonConvert.DeserializeObject<SaveState>(lines);
+                string saveFile = file.FullName;
+                string lines = File.ReadAllText(saveFile);
+                SaveState saveState = JsonConvert.DeserializeObject<SaveState>(lines);
                 if (arguments.Count == 2)
                 {
                     if (arguments.At(1) == "f" || arguments.At(1) == "force")
                     {
+                        State.SaveState = saveState;
                         Round.Restart();
                         response = "Loading save in new round.";
                         return true;
                     }
                 }
 
-                Methods.LoadState();
-                    
+                Methods.LoadState(saveState);
                 response = "Save loaded successfully.";
                 return true;
             }
