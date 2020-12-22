@@ -9,7 +9,7 @@ namespace TestingGrounds.Patches
     {
         private static bool Prefix(RandomSeedSync __instance)
         {
-            if (State.SaveState == null)
+            if (State.SaveState == null && State.NextSeed == 0)
                 return true;
 
             if (!__instance.isLocalPlayer || !NetworkServer.active)
@@ -26,7 +26,7 @@ namespace TestingGrounds.Patches
                 };
             }
 
-            __instance.Networkseed = State.SaveState.Seed;
+            __instance.Networkseed = State.SaveState != null ? State.SaveState.Seed : State.NextSeed;
             return false;
         }
     }

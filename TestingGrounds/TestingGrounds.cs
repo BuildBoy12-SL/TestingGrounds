@@ -11,7 +11,7 @@
     {
         private static readonly string FileDirectory = Path.Combine(Paths.Configs, "TestingGrounds");
         internal static readonly string SaveStateDirectory = Path.Combine(FileDirectory, "Saves");
-        internal static readonly string RecordingsDirectory = Path.Combine(SaveStateDirectory, "Recordings");
+        internal static readonly string RecordingsDirectory = Path.Combine(FileDirectory, "Recordings");
 
         private static readonly Harmony Harmony = new(nameof(TestingGrounds).ToLowerInvariant());
 

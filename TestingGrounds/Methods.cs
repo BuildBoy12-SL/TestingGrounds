@@ -9,10 +9,13 @@ namespace TestingGrounds
     using MEC;
     using Mirror;
     using Newtonsoft.Json;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.IO;
     using UnityEngine;
+    using Object = UnityEngine.Object;
+    using Random = UnityEngine.Random;
 
     public class Methods
     {
@@ -26,63 +29,66 @@ namespace TestingGrounds
             if (!File.Exists(updatedDirectory))
                 File.Create(updatedDirectory).Close();
 
+            SaveState cachedState = null;
             for (int i = 0; i < Application.targetFrameRate * seconds; i++)
             {
+                Tuple<string, SaveState> curData = GetData(cachedState);
                 using (StreamWriter sw = File.AppendText(updatedDirectory))
-                {
-                    sw.WriteLine(GetData());
-                }
+                    sw.WriteLine(curData.Item1);
 
+                cachedState = curData.Item2;
                 yield return Timing.WaitForOneFrame;
             }
 
             Log.Debug($"Recording \"{directory}\" has ended.", TestingGrounds.Singleton.Config.ShowDebug);
         }
 
-        private static string GetData()
+        private static Tuple<string, SaveState> GetData(SaveState state = null)
         {
-            var savedPlayers =
-                Player.List.Select(player => new SavedPlayer
+            List<SavedPlayer> savedPlayers = Player.List.Select(player => new SavedPlayer
                 {
                     Inventory = player.Inventory.items,
                     UserId = player.UserId,
                     Position = player.Position,
                     Role = player.Role,
                     Rotation = player.Rotation
-                }).ToList();
+                })
+                .Where(savedPlayer =>
+                    state == null || state.SavedPlayers.All(ply => ply.Position != savedPlayer.Position))
+                .ToList();
 
-            var savedItems =
-                (from pickup in UnityEngine.Object.FindObjectsOfType<Pickup>()
-                    let transform = pickup.transform
-                    select
-                        new SavedItem
-                        {
-                            Durability = pickup.durability, Item = pickup.itemId, Position = transform.position,
-                            Rotation = transform.rotation
-                        }).ToList();
+            List<SavedItem> savedItems = (from pickup in Object.FindObjectsOfType<Pickup>()
+                let transform = pickup.transform
+                select new SavedItem
+                {
+                    Durability = pickup.durability, Item = pickup.itemId, Position = transform.position,
+                    Rotation = transform.rotation
+                }
+                into savedItem
+                where state == null || state.SavedItems.All(si => si.Position != savedItem.Position)
+                select savedItem).ToList();
 
-            var savedDoors =
-                (from door in Map.Doors
-                    select
-                        new SavedDoor
-                        {
-                            IsDestroyed = door.Networkdestroyed, IsLocked = door.Networklocked,
-                            IsOpen = door.NetworkisOpen,
-                            Position = door.transform.position
-                        }).ToList();
+            List<SavedDoor> savedDoors = Map.Doors
+                .Select(door => new SavedDoor
+                {
+                    IsDestroyed = door.Networkdestroyed, IsLocked = door.Networklocked, IsOpen = door.NetworkisOpen,
+                    Position = door.transform.position
+                }).Where(savedDoor => state == null || state.SavedDoors.All(sd => sd.Position != savedDoor.Position))
+                .ToList();
 
-            var saveState = new SaveState
+            SaveState saveState = new SaveState
             {
-                Seed = GameObject.Find("Host").GetComponent<RandomSeedSync>().seed,
+                Seed = State.CurrentSeed,
                 SavedItems = savedItems,
                 SavedPlayers = savedPlayers,
                 SavedDoors = savedDoors
             };
 
-            return JsonConvert.SerializeObject(saveState, new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
+            return new Tuple<string, SaveState>(JsonConvert.SerializeObject(saveState,
+                new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                }), saveState);
         }
 
         public static IEnumerator<float> PlayRecording(string directory)
@@ -100,7 +106,7 @@ namespace TestingGrounds
 
         public static void SaveState(string directory)
         {
-            File.WriteAllText(directory, GetData());
+            File.WriteAllText(directory, GetData().Item1);
         }
 
         public static void LoadState(SaveState saveState)
@@ -124,7 +130,7 @@ namespace TestingGrounds
                         Timing.CallDelayed(0.1f, () =>
                         {
                             ply.Position = savedPlayer.Position;
-                            ply.Rotation = savedPlayer.Rotation;
+                            ply.CameraTransform.position = savedPlayer.Rotation;
                         });
                     });
                 }
